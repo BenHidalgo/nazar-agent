@@ -30,7 +30,7 @@ def has_xai_credentials() -> bool:
     if os.environ.get("XAI_API_KEY", "").strip():
         return True
     try:
-        from hermes_constants import get_hermes_home
+        from nazar_constants import get_hermes_home
 
         auth_path = get_hermes_home() / "auth.json"
         if not auth_path.exists():
@@ -53,7 +53,7 @@ def get_env_value(name: str, default=None):
     xAI credential resolver.
     """
     try:
-        from hermes_cli.config import get_env_value as _hermes_get_env_value
+        from nazar_cli.config import get_env_value as _hermes_get_env_value
 
         value = _hermes_get_env_value(name)
         if value is not None:
@@ -66,7 +66,7 @@ def get_env_value(name: str, default=None):
 def hermes_xai_user_agent() -> str:
     """Return a stable Hermes-specific User-Agent for xAI HTTP calls."""
     try:
-        from hermes_cli import __version__
+        from nazar_cli import __version__
     except Exception:
         __version__ = "unknown"
     return f"Hermes-Agent/{__version__}"
@@ -90,7 +90,7 @@ def resolve_xai_http_credentials(*, force_refresh: bool = False) -> Dict[str, st
     """
     if not force_refresh:
         try:
-            from hermes_cli.runtime_provider import resolve_runtime_provider
+            from nazar_cli.runtime_provider import resolve_runtime_provider
 
             runtime = resolve_runtime_provider(requested="xai-oauth")
             access_token = str(runtime.get("api_key") or "").strip()
@@ -105,7 +105,7 @@ def resolve_xai_http_credentials(*, force_refresh: bool = False) -> Dict[str, st
             pass
 
     try:
-        from hermes_cli.auth import resolve_xai_oauth_runtime_credentials
+        from nazar_cli.auth import resolve_xai_oauth_runtime_credentials
 
         creds = resolve_xai_oauth_runtime_credentials(force_refresh=force_refresh)
         access_token = str(creds.get("api_key") or "").strip()

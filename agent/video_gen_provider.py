@@ -202,8 +202,8 @@ class VideoGenProvider(abc.ABC):
 
 
 def _videos_cache_dir() -> Path:
-    """Return ``$HERMES_HOME/cache/videos/``, creating parents as needed."""
-    from hermes_constants import get_hermes_home
+    """Return ``$NAZAR_HOME/cache/videos/``, creating parents as needed."""
+    from nazar_constants import get_hermes_home
 
     path = get_hermes_home() / "cache" / "videos"
     path.mkdir(parents=True, exist_ok=True)
@@ -216,7 +216,7 @@ def save_b64_video(
     prefix: str = "video",
     extension: str = "mp4",
 ) -> Path:
-    """Decode base64 video data and write under ``$HERMES_HOME/cache/videos/``.
+    """Decode base64 video data and write under ``$NAZAR_HOME/cache/videos/``.
 
     Returns the absolute :class:`Path` to the saved file.
 

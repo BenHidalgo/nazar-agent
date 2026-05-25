@@ -243,8 +243,8 @@ class CodexAppServerSession:
                 codex_bin=self._codex_bin, codex_home=self._codex_home
             )
         self._client.initialize(
-            client_name="hermes",
-            client_title="Hermes Agent",
+            client_name="nazar",
+            client_title="Nazar Agent",
             client_version=_get_hermes_version(),
         )
         # Permission selection is intentionally NOT sent on thread/start.

@@ -2,7 +2,7 @@
 Plugin LLM facade — host-owned LLM access for trusted plugins.
 ==============================================================
 
-Plugins built on Hermes Agent often need to make their own LLM calls
+Plugins built on Nazar Agent often need to make their own LLM calls
 out-of-band — a hook that rewrites a tool error before the user sees
 it, a gateway adapter that translates inbound text, a slash command
 that summarises a paste, a scheduled job that scores yesterday's
@@ -210,7 +210,7 @@ def _resolve_trust_policy(plugin_id: str) -> _TrustPolicy:
         return _TrustPolicy(plugin_id="")
 
     try:
-        from hermes_cli.config import load_config
+        from nazar_cli.config import load_config
         config = load_config() or {}
     except Exception:  # pragma: no cover — config IO failure
         return _TrustPolicy(plugin_id=plugin_id)

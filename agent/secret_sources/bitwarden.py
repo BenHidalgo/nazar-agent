@@ -90,10 +90,10 @@ def _disk_cache_path(home_path: Optional[Path] = None) -> Path:
     """Return the disk cache path under hermes_home/cache/.
 
     `home_path` is what `load_hermes_dotenv()` already resolved; falling back
-    to `$HERMES_HOME` / `~/.hermes` keeps direct callers working too.
+    to `$NAZAR_HOME` / `~/.hermes` keeps direct callers working too.
     """
     if home_path is None:
-        home_path = Path(os.getenv("HERMES_HOME", Path.home() / ".hermes"))
+        home_path = Path(os.getenv("NAZAR_HOME", Path.home() / ".hermes"))
     return home_path / "cache" / _DISK_CACHE_BASENAME
 
 
@@ -209,7 +209,7 @@ class FetchResult:
 
 def _hermes_bin_dir() -> Path:
     """Where Hermes stores its managed binaries.  Profile-aware."""
-    from hermes_constants import get_hermes_home
+    from nazar_constants import get_hermes_home
 
     return get_hermes_home() / "bin"
 
@@ -431,7 +431,7 @@ def fetch_bitwarden_secrets(
     ``<hermes_home>/cache/bws_cache.json`` (for back-to-back CLI invocations).
     Both share the same TTL.  Pass ``home_path`` so disk cache lookups find
     the right directory in tests / non-standard installs; otherwise we fall
-    back to ``$HERMES_HOME`` / ``~/.hermes``.
+    back to ``$NAZAR_HOME`` / ``~/.hermes``.
 
     Raises :class:`RuntimeError` for fatal conditions (missing binary,
     auth failure, unparseable output).  Callers in the env_loader path
@@ -553,7 +553,7 @@ def _is_valid_env_name(name: str) -> bool:
 
 
 # ---------------------------------------------------------------------------
-# Public entry point — called from hermes_cli.env_loader
+# Public entry point — called from nazar_cli.env_loader
 # ---------------------------------------------------------------------------
 
 

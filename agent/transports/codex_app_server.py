@@ -94,7 +94,7 @@ class CodexAppServerClient:
                 else spawn_env.get(
                     "HERMES_KANBAN_ROOT",
                     os.path.join(
-                        spawn_env.get("HERMES_HOME", os.path.expanduser("~/.hermes")),
+                        spawn_env.get("NAZAR_HOME", os.path.expanduser("~/.hermes")),
                         "kanban",
                     ),
                 )
@@ -141,8 +141,8 @@ class CodexAppServerClient:
 
     def initialize(
         self,
-        client_name: str = "hermes",
-        client_title: str = "Hermes Agent",
+        client_name: str = "nazar",
+        client_title: str = "Nazar Agent",
         client_version: str = "0.1",
         capabilities: Optional[dict] = None,
         timeout: float = 10.0,

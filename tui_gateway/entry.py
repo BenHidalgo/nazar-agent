@@ -202,7 +202,7 @@ def main():
     # loaded once by ``_config_mtime`` elsewhere) and only pay the import
     # cost when there's actually MCP work to do.
     try:
-        from hermes_cli.config import read_raw_config
+        from nazar_cli.config import read_raw_config
         _mcp_servers = (read_raw_config() or {}).get("mcp_servers")
         _has_mcp_servers = isinstance(_mcp_servers, dict) and len(_mcp_servers) > 0
     except Exception:

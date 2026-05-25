@@ -1287,7 +1287,7 @@ async def _send_email(extra, chat_id, message):
         msg = MIMEText(message, "plain", "utf-8")
         msg["From"] = address
         msg["To"] = chat_id
-        msg["Subject"] = "Hermes Agent"
+        msg["Subject"] = "Nazar Agent"
         msg["Date"] = formatdate(localtime=True)
 
         server = smtplib.SMTP(smtp_host, smtp_port)
@@ -1651,7 +1651,7 @@ def _check_send_message():
 
     Also passes for kanban workers — the dispatcher sets ``HERMES_KANBAN_TASK``
     on every spawned worker, but those workers run with the assignee profile's
-    ``HERMES_HOME`` which has no ``gateway.pid``, so the gateway-running check
+    ``NAZAR_HOME`` which has no ``gateway.pid``, so the gateway-running check
     would fail even though the parent gateway is alive. Honoring the env var
     lets workers call ``send_message`` to deliver rich content directly to the
     originating chat (paired with ``kanban_complete`` for the short notifier

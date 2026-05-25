@@ -1,5 +1,5 @@
 """
-Lazy dependency installer for opt-in Hermes Agent backends.
+Lazy dependency installer for opt-in Nazar Agent backends.
 
 Many Hermes features (Mistral TTS, ElevenLabs TTS, Honcho memory, Bedrock,
 Slack, Matrix, etc.) require Python packages that not every user needs. The
@@ -228,7 +228,7 @@ def _allow_lazy_installs() -> bool:
     if os.environ.get("HERMES_DISABLE_LAZY_INSTALLS") == "1":
         return False
     try:
-        from hermes_cli.config import load_config
+        from nazar_cli.config import load_config
         cfg = load_config()
     except Exception:
         return True

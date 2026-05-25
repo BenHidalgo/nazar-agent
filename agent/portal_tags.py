@@ -3,7 +3,7 @@
 Every Hermes request that hits the Nous Portal — main agent loop, auxiliary
 client (compression / titles / vision / web_extract / session_search / etc.),
 and any future code path — must carry the same product-attribution tags so
-Nous can attribute usage to Hermes Agent and bucket it by client release.
+Nous can attribute usage to Nazar Agent and bucket it by client release.
 
 Tag shape (sent in OpenAI-compatible ``extra_body['tags']``):
 
@@ -41,7 +41,7 @@ def _hermes_version() -> str:
     never happen in a real install — guarded for defensive testing).
     """
     try:
-        from hermes_cli import __version__
+        from nazar_cli import __version__
         return __version__
     except Exception:
         return "unknown"

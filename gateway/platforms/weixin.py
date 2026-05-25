@@ -1,7 +1,7 @@
 """
 Weixin platform adapter.
 
-Connects Hermes Agent to WeChat personal accounts via Tencent's iLink Bot API.
+Connects Nazar Agent to WeChat personal accounts via Tencent's iLink Bot API.
 
 Design notes:
 - Long-poll ``getupdates`` drives inbound delivery.
@@ -66,7 +66,7 @@ from gateway.platforms.base import (
     cache_document_from_bytes,
     cache_image_from_bytes,
 )
-from hermes_constants import get_hermes_home
+from nazar_constants import get_hermes_home
 from utils import atomic_json_write
 
 ILINK_BASE_URL = "https://ilinkai.weixin.qq.com"
