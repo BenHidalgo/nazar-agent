@@ -1,0 +1,4 @@
+[console_scripts]
+hermes = nazar_cli.main:main
+hermes-acp = acp_adapter.entry:main
+nazar-agent = run_agent:main
