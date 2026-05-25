@@ -119,7 +119,7 @@ def _get_token_dir() -> Path:
         from nazar_constants import get_nazar_home
         base = Path(get_nazar_home())
     except ImportError:
-        base = Path(os.environ.get("NAZAR_HOME", str(Path.home() / ".hermes")))
+        base = Path(os.environ.get("NAZAR_HOME", str(Path.home() / ".nazzar")))
     return base / "mcp-tokens"
 
 
