@@ -17,7 +17,7 @@ _NAZAR_HOME_OVERRIDE: ContextVar[str | object] = ContextVar(
 )
 
 
-def set_hermes_home_override(path: str | Path | None) -> Token:
+def set_nazar_home_override(path: str | Path | None) -> Token:
     """Set a context-local Hermes home override and return its reset token.
 
     This is for in-process, per-task scoping.  It deliberately does not mutate
@@ -27,12 +27,12 @@ def set_hermes_home_override(path: str | Path | None) -> Token:
     return _NAZAR_HOME_OVERRIDE.set(value)
 
 
-def reset_hermes_home_override(token: Token) -> None:
+def reset_nazar_home_override(token: Token) -> None:
     """Restore the previous context-local Hermes home override."""
     _NAZAR_HOME_OVERRIDE.reset(token)
 
 
-def get_hermes_home_override() -> str | None:
+def get_nazar_home_override() -> str | None:
     """Return the active context-local Hermes home override, if any."""
     override = _NAZAR_HOME_OVERRIDE.get()
     if override is _UNSET or not override:
@@ -40,7 +40,7 @@ def get_hermes_home_override() -> str | None:
     return str(override)
 
 
-def get_hermes_home() -> Path:
+def get_nazar_home() -> Path:
     """Return the Hermes home directory (default: ~/.hermes).
 
     Reads NAZAR_HOME env var, falls back to ~/.hermes.
@@ -56,7 +56,7 @@ def get_hermes_home() -> Path:
     template in ``hermes_cli/gateway.py`` and the kanban dispatcher in
     ``hermes_cli/kanban_db.py``).  See https://github.com/NousResearch/hermes-agent/issues/18594.
     """
-    override = get_hermes_home_override()
+    override = get_nazar_home_override()
     if override:
         return Path(override)
 
@@ -171,7 +171,7 @@ def get_optional_skills_dir(default: Path | None = None) -> Path:
         return packaged
     if default is not None:
         return default
-    return get_hermes_home() / "optional-skills"
+    return get_nazar_home() / "optional-skills"
 
 
 def get_bundled_skills_dir(default: Path | None = None) -> Path:
@@ -191,10 +191,10 @@ def get_bundled_skills_dir(default: Path | None = None) -> Path:
         return packaged
     if default is not None:
         return default
-    return get_hermes_home() / "skills"
+    return get_nazar_home() / "skills"
 
 
-def get_hermes_dir(new_subpath: str, old_name: str) -> Path:
+def get_nazar_dir(new_subpath: str, old_name: str) -> Path:
     """Resolve a Hermes subdirectory with backward compatibility.
 
     New installs get the consolidated layout (e.g. ``cache/images``).
@@ -208,7 +208,7 @@ def get_hermes_dir(new_subpath: str, old_name: str) -> Path:
     Returns:
         Absolute ``Path`` — old location if it exists on disk, otherwise the new one.
     """
-    home = get_hermes_home()
+    home = get_nazar_home()
     old_path = home / old_name
     if old_path.exists():
         return old_path
@@ -226,9 +226,9 @@ def display_hermes_home() -> str:
 
     Use this in **user-facing** print/log messages instead of hardcoding
     ``~/.hermes``.  For code that needs a real ``Path``, use
-    :func:`get_hermes_home` instead.
+    :func:`get_nazar_home` instead.
     """
-    home = get_hermes_home()
+    home = get_nazar_home()
     try:
         return "~/" + str(home.relative_to(Path.home()))
     except ValueError:
@@ -272,7 +272,7 @@ def get_subprocess_home() -> str | None:
     Activation is directory-based: if the ``home/`` subdirectory doesn't
     exist, returns ``None`` and behavior is unchanged.
     """
-    hermes_home = get_hermes_home_override() or os.getenv("NAZAR_HOME")
+    hermes_home = get_nazar_home_override() or os.getenv("NAZAR_HOME")
     if not hermes_home:
         return None
     profile_home = os.path.join(hermes_home, "home")
@@ -370,21 +370,21 @@ def is_container() -> bool:
 def get_config_path() -> Path:
     """Return the path to ``config.yaml`` under NAZAR_HOME.
 
-    Replaces the ``get_hermes_home() / "config.yaml"`` pattern repeated
+    Replaces the ``get_nazar_home() / "config.yaml"`` pattern repeated
     in 7+ files (skill_utils.py, hermes_logging.py, hermes_time.py, etc.).
     """
-    return get_hermes_home() / "config.yaml"
+    return get_nazar_home() / "config.yaml"
 
 
 def get_skills_dir() -> Path:
     """Return the path to the skills directory under NAZAR_HOME."""
-    return get_hermes_home() / "skills"
+    return get_nazar_home() / "skills"
 
 
 
 def get_env_path() -> Path:
     """Return the path to the ``.env`` file under NAZAR_HOME."""
-    return get_hermes_home() / ".env"
+    return get_nazar_home() / ".env"
 
 
 # ─── Network Preferences ─────────────────────────────────────────────────────

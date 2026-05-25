@@ -174,9 +174,9 @@ _HERMES_PROVIDER_ENV_BLOCKLIST = _build_provider_env_blocklist()
 def _inject_context_hermes_home(env: dict) -> None:
     """Bridge the context-local Hermes home override into subprocess env."""
     try:
-        from nazar_constants import get_hermes_home_override
+        from nazar_constants import get_nazar_home_override
 
-        value = get_hermes_home_override()
+        value = get_nazar_home_override()
         if value:
             env["NAZAR_HOME"] = value
     except Exception:
@@ -454,8 +454,8 @@ class LocalEnvironment(BaseEnvironment):
             # accepts forward slashes in filesystem paths, and we control
             # the path so we can guarantee no spaces.
             try:
-                from nazar_constants import get_hermes_home
-                cache_dir = get_hermes_home() / "cache" / "terminal"
+                from nazar_constants import get_nazar_home
+                cache_dir = get_nazar_home() / "cache" / "terminal"
             except Exception:
                 cache_dir = Path(tempfile.gettempdir()) / "hermes_terminal"
             cache_dir.mkdir(parents=True, exist_ok=True)

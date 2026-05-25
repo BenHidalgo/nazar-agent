@@ -11,12 +11,12 @@ import shutil
 import importlib.util
 from pathlib import Path
 
-from nazar_cli.config import get_project_root, get_hermes_home, get_env_path
+from nazar_cli.config import get_project_root, get_nazar_home, get_env_path
 from nazar_cli.env_loader import load_hermes_dotenv
 from nazar_constants import display_hermes_home
 
 PROJECT_ROOT = get_project_root()
-NAZAR_HOME = get_hermes_home()
+NAZAR_HOME = get_nazar_home()
 _DHH = display_hermes_home()  # user-facing display path (e.g. ~/.hermes or ~/.hermes/profiles/coder)
 
 # Load environment variables from ~/.hermes/.env so API key checks work

@@ -51,7 +51,7 @@ from agent.tool_guardrails import (
 )
 from nazar_cli.config import cfg_get
 from nazar_cli.timeouts import get_provider_request_timeout
-from nazar_constants import get_hermes_home
+from nazar_constants import get_nazar_home
 from model_tools import check_toolset_requirements, get_tool_definitions
 from utils import base_url_host_matches
 
@@ -986,7 +986,7 @@ def init_agent(
         os.environ["HERMES_SESSION_ID"] = agent.session_id
 
     # Session logs go into ~/.hermes/sessions/ alongside gateway sessions
-    hermes_home = get_hermes_home()
+    hermes_home = get_nazar_home()
     agent.logs_dir = hermes_home / "sessions"
     agent.logs_dir.mkdir(parents=True, exist_ok=True)
     # Per-session JSON snapshot writer (~/.hermes/sessions/session_{sid}.json)
@@ -1097,7 +1097,7 @@ def init_agent(
                     _init_kwargs = {
                         "session_id": agent.session_id,
                         "platform": platform or "cli",
-                        "hermes_home": str(get_hermes_home()),
+                        "hermes_home": str(get_nazar_home()),
                         "agent_context": "primary",
                     }
                     # Thread session title for memory provider scoping
@@ -1507,7 +1507,7 @@ def init_agent(
         try:
             agent.context_compressor.on_session_start(
                 agent.session_id,
-                hermes_home=str(get_hermes_home()),
+                hermes_home=str(get_nazar_home()),
                 platform=agent.platform or "cli",
                 model=agent.model,
                 context_length=getattr(agent.context_compressor, "context_length", 0),

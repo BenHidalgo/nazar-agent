@@ -203,9 +203,9 @@ class VideoGenProvider(abc.ABC):
 
 def _videos_cache_dir() -> Path:
     """Return ``$NAZAR_HOME/cache/videos/``, creating parents as needed."""
-    from nazar_constants import get_hermes_home
+    from nazar_constants import get_nazar_home
 
-    path = get_hermes_home() / "cache" / "videos"
+    path = get_nazar_home() / "cache" / "videos"
     path.mkdir(parents=True, exist_ok=True)
     return path
 

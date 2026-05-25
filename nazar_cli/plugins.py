@@ -47,7 +47,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Set, Union
 
-from nazar_constants import get_hermes_home
+from nazar_constants import get_nazar_home
 from utils import env_var_enabled
 from nazar_cli.config import cfg_get
 
@@ -1036,7 +1036,7 @@ class PluginManager:
         manifests.extend(bundled_platforms)
 
         # 2. User plugins (~/.hermes/plugins/)
-        user_dir = get_hermes_home() / "plugins"
+        user_dir = get_nazar_home() / "plugins"
         logger.debug("Scanning user plugins: %s", user_dir)
         user_manifests = self._scan_directory(user_dir, source="user")
         logger.debug("  user: %d manifest(s)", len(user_manifests))

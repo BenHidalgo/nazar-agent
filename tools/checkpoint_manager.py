@@ -57,7 +57,7 @@ import shutil
 import subprocess
 import time
 from pathlib import Path
-from nazar_constants import get_hermes_home
+from nazar_constants import get_nazar_home
 from typing import Dict, List, Optional, Set, Tuple
 
 logger = logging.getLogger(__name__)
@@ -66,7 +66,7 @@ logger = logging.getLogger(__name__)
 # Constants
 # ---------------------------------------------------------------------------
 
-CHECKPOINT_BASE = get_hermes_home() / "checkpoints"
+CHECKPOINT_BASE = get_nazar_home() / "checkpoints"
 
 # Single shared store directory under CHECKPOINT_BASE.
 _STORE_DIRNAME = "store"

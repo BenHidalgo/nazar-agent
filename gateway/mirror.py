@@ -14,11 +14,11 @@ import logging
 from datetime import datetime
 from typing import Optional
 
-from nazar_cli.config import get_hermes_home
+from nazar_cli.config import get_nazar_home
 
 logger = logging.getLogger(__name__)
 
-_SESSIONS_DIR = get_hermes_home() / "sessions"
+_SESSIONS_DIR = get_nazar_home() / "sessions"
 _SESSIONS_INDEX = _SESSIONS_DIR / "sessions.json"
 
 

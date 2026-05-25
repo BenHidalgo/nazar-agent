@@ -814,8 +814,8 @@ def _resolve_endpoint_context_length(
 
 def _get_context_cache_path() -> Path:
     """Return path to the persistent context length cache file."""
-    from nazar_constants import get_hermes_home
-    return get_hermes_home() / "context_length_cache.yaml"
+    from nazar_constants import get_nazar_home
+    return get_nazar_home() / "context_length_cache.yaml"
 
 
 def _load_context_cache() -> Dict[str, int]:

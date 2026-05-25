@@ -21,7 +21,7 @@ from nazar_cli.config import (
     save_config,
     get_env_value,
     save_env_value,
-    get_hermes_home,  # noqa: F401 — used by test mocks
+    get_nazar_home,  # noqa: F401 — used by test mocks
 )
 from nazar_cli.colors import Colors, color
 from nazar_constants import display_hermes_home

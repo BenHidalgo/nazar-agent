@@ -20,7 +20,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import IO, Callable, Protocol
 
-from nazar_constants import get_hermes_home
+from nazar_constants import get_nazar_home
 from tools.interrupt import is_interrupted
 
 logger = logging.getLogger(__name__)
@@ -88,7 +88,7 @@ def get_sandbox_dir() -> Path:
     if custom:
         p = Path(custom)
     else:
-        p = get_hermes_home() / "sandboxes"
+        p = get_nazar_home() / "sandboxes"
     p.mkdir(parents=True, exist_ok=True)
     return p
 

@@ -10,8 +10,8 @@ from typing import Optional
 def _hermes_home_path() -> Path:
     """Resolve the active NAZAR_HOME (profile-aware) without circular imports."""
     try:
-        from nazar_constants import get_hermes_home  # local import to avoid cycles
-        return get_hermes_home()
+        from nazar_constants import get_nazar_home  # local import to avoid cycles
+        return get_nazar_home()
     except Exception:
         return Path(os.path.expanduser("~/.hermes"))
 

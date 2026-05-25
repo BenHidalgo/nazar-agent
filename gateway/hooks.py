@@ -26,10 +26,10 @@ from typing import Any, Callable, Dict, List, Optional
 
 import yaml
 
-from nazar_cli.config import get_hermes_home
+from nazar_cli.config import get_nazar_home
 
 
-HOOKS_DIR = get_hermes_home() / "hooks"
+HOOKS_DIR = get_nazar_home() / "hooks"
 
 
 class HookRegistry:

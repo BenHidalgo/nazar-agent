@@ -18,7 +18,7 @@ import sys
 from pathlib import Path
 from typing import Any, Optional
 
-from nazar_constants import get_hermes_home
+from nazar_constants import get_nazar_home
 from nazar_cli.config import cfg_get
 from nazar_cli.secret_prompt import masked_secret_prompt
 
@@ -72,7 +72,7 @@ _SUPPORTED_MANIFEST_VERSION = 1
 
 def _plugins_dir() -> Path:
     """Return the user plugins directory, creating it if needed."""
-    plugins = get_hermes_home() / "plugins"
+    plugins = get_nazar_home() / "plugins"
     plugins.mkdir(parents=True, exist_ok=True)
     return plugins
 

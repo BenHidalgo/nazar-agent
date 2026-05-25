@@ -12,12 +12,12 @@ Usage:
     python cli.py --list-tools             # List available tools and exit
 """
 
-# IMPORTANT: hermes_bootstrap must be the very first import — UTF-8 stdio
-# on Windows.  No-op on POSIX.  See hermes_bootstrap.py for full rationale.
+# IMPORTANT: nazar_bootstrap must be the very first import — UTF-8 stdio
+# on Windows.  No-op on POSIX.  See nazar_bootstrap.py for full rationale.
 try:
     import nazar_bootstrap  # noqa: F401
 except ModuleNotFoundError:
-    # Graceful fallback when hermes_bootstrap isn't registered in the venv
+    # Graceful fallback when nazar_bootstrap isn't registered in the venv
     # yet — happens during partial ``hermes update`` where git-reset landed
     # new code but ``uv pip install -e .`` didn't finish.  Missing bootstrap
     # means UTF-8 stdio setup is skipped on Windows; POSIX is unaffected.
@@ -160,7 +160,7 @@ _COMMAND_SPINNER_FRAMES = ("⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧
 
 # Load .env from ~/.hermes/.env first, then project root as dev fallback.
 # User-managed env files should override stale shell exports on restart.
-from nazar_constants import get_hermes_home, display_hermes_home
+from nazar_constants import get_nazar_home, display_hermes_home
 from nazar_cli.browser_connect import (
     DEFAULT_BROWSER_CDP_URL,
     is_browser_debug_ready,
@@ -170,7 +170,7 @@ from nazar_cli.browser_connect import (
 from nazar_cli.env_loader import load_hermes_dotenv
 from utils import base_url_host_matches, is_truthy_value
 
-_hermes_home = get_hermes_home()
+_hermes_home = get_nazar_home()
 _project_env = Path(__file__).parent / '.env'
 load_hermes_dotenv(hermes_home=_hermes_home, project_env=_project_env)
 
@@ -1250,8 +1250,8 @@ def _run_state_db_auto_maintenance(session_db) -> None:
         return
     try:
         from nazar_cli.config import load_config as _load_full_config
-        from nazar_constants import get_hermes_home as _get_hermes_home
-        _hermes_home_maint = _get_hermes_home()
+        from nazar_constants import get_nazar_home as _get_nazar_home
+        _hermes_home_maint = _get_nazar_home()
 
         # One-time prune of empty TUI ghost sessions.
         try:
@@ -5406,7 +5406,7 @@ class HermesCLI:
         """
         from nazar_cli.clipboard import save_clipboard_image
 
-        img_dir = get_hermes_home() / "images"
+        img_dir = get_nazar_home() / "images"
         self._image_counter += 1
         ts = datetime.now().strftime("%Y%m%d_%H%M%S")
         img_path = img_dir / f"clip_{ts}_{self._image_counter}.png"
@@ -6967,7 +6967,7 @@ class HermesCLI:
             return
 
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        saved_dir = get_hermes_home() / "sessions" / "saved"
+        saved_dir = get_nazar_home() / "sessions" / "saved"
         try:
             saved_dir.mkdir(parents=True, exist_ok=True)
         except Exception as e:
@@ -10874,9 +10874,9 @@ class HermesCLI:
 
             # Use MP3 output for CLI playback (afplay doesn't handle OGG well).
             # The TTS tool may auto-convert MP3->OGG, but the original MP3 remains.
-            os.makedirs(os.path.join(tempfile.gettempdir(), "hermes_voice"), exist_ok=True)
+            os.makedirs(os.path.join(tempfile.gettempdir(), "nazar_voice"), exist_ok=True)
             mp3_path = os.path.join(
-                tempfile.gettempdir(), "hermes_voice",
+                tempfile.gettempdir(), "nazar_voice",
                 f"tts_{time.strftime('%Y%m%d_%H%M%S')}.mp3",
             )
 
@@ -14678,7 +14678,7 @@ class HermesCLI:
                 # and SQLite history. Ported from google-gemini/gemini-cli#19332.
                 if getattr(self, '_delete_session_on_exit', False):
                     try:
-                        from nazar_constants import get_hermes_home as _ghh
+                        from nazar_constants import get_nazar_home as _ghh
                         _sessions_dir = _ghh() / "sessions"
                         _sid = self.agent.session_id
                         if self._session_db.delete_session(_sid, sessions_dir=_sessions_dir):

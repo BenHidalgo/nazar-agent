@@ -116,8 +116,8 @@ def _get_token_dir() -> Path:
     Layout: ``NAZAR_HOME/mcp-tokens/``
     """
     try:
-        from nazar_constants import get_hermes_home
-        base = Path(get_hermes_home())
+        from nazar_constants import get_nazar_home
+        base = Path(get_nazar_home())
     except ImportError:
         base = Path(os.environ.get("NAZAR_HOME", str(Path.home() / ".hermes")))
     return base / "mcp-tokens"

@@ -29,8 +29,8 @@ _SUBSCRIPTIONS_FILE_MODE = 0o600
 
 
 def _hermes_home() -> Path:
-    from nazar_constants import get_hermes_home
-    return get_hermes_home()
+    from nazar_constants import get_nazar_home
+    return get_nazar_home()
 
 
 def _subscriptions_path() -> Path:

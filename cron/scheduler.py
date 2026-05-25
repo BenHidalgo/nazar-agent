@@ -36,7 +36,7 @@ from typing import List, Optional
 # the module) fail with ModuleNotFoundError for hermes_time et al.
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from nazar_constants import get_hermes_home
+from nazar_constants import get_nazar_home
 from nazar_cli._subprocess_compat import windows_hide_flags
 from nazar_cli.config import load_config, _expand_env_vars
 from nazar_time import now as _hermes_now
@@ -158,14 +158,14 @@ SILENT_MARKER = "[SILENT]"
 _hermes_home: Path | None = None
 
 
-def _get_hermes_home() -> Path:
+def _get_nazar_home() -> Path:
     """Resolve Hermes home dynamically while preserving test monkeypatch hooks."""
-    return _hermes_home or get_hermes_home()
+    return _hermes_home or get_nazar_home()
 
 
 def _get_lock_paths() -> tuple[Path, Path]:
     """Resolve cron lock paths at call time so profile/env changes are honored."""
-    hermes_home = _get_hermes_home()
+    hermes_home = _get_nazar_home()
     lock_dir = hermes_home / "cron"
     return lock_dir, lock_dir / ".tick.lock"
 
@@ -177,9 +177,9 @@ def _job_profile_context(job_id: str, profile: Optional[str]):
     Cron jobs are stored and scheduled by the profile running the scheduler, but
     an individual job can opt into a different runtime profile. While active,
     the scheduler's test/override hook and a context-local Hermes home override
-    both point at the resolved profile directory so _get_hermes_home(),
+    both point at the resolved profile directory so _get_nazar_home(),
     .env/config loading, script resolution, AIAgent construction, and downstream
-    get_hermes_home() callers agree on the same home.
+    get_nazar_home() callers agree on the same home.
 
     Some existing provider/config paths still load profile .env values through
     os.environ, so profile jobs also snapshot and restore the process
@@ -196,7 +196,7 @@ def _job_profile_context(job_id: str, profile: Optional[str]):
     env_snapshot = os.environ.copy()
 
     from nazar_cli.profiles import normalize_profile_name, resolve_profile_env
-    from nazar_constants import reset_hermes_home_override, set_hermes_home_override
+    from nazar_constants import reset_nazar_home_override, set_nazar_home_override
 
     normalized_profile = normalize_profile_name(raw_profile)
     try:
@@ -212,7 +212,7 @@ def _job_profile_context(job_id: str, profile: Optional[str]):
 
     override_token = None
     try:
-        override_token = set_hermes_home_override(profile_home)
+        override_token = set_nazar_home_override(profile_home)
         _hermes_home = profile_home
         logger.info(
             "Job '%s': using Hermes profile '%s' (%s)",
@@ -224,7 +224,7 @@ def _job_profile_context(job_id: str, profile: Optional[str]):
     finally:
         _hermes_home = prior_override
         if override_token is not None:
-            reset_hermes_home_override(override_token)
+            reset_nazar_home_override(override_token)
         # Delta-based restore: remove added keys, restore changed keys.
         # Avoids a brief window where other threads see an empty env.
         added = set(os.environ.keys()) - set(env_snapshot.keys())
@@ -875,7 +875,7 @@ def _run_job_script(script_path: str) -> tuple[bool, str]:
         (success, output) — on failure *output* contains the error message so the
         LLM can report the problem to the user.
     """
-    scripts_dir = _get_hermes_home() / "scripts"
+    scripts_dir = _get_nazar_home() / "scripts"
     scripts_dir.mkdir(parents=True, exist_ok=True)
     scripts_dir_resolved = scripts_dir.resolve()
 
@@ -927,7 +927,7 @@ def _run_job_script(script_path: str) -> tuple[bool, str]:
         argv = [sys.executable, str(path)]
 
     run_env = os.environ.copy()
-    run_env["NAZAR_HOME"] = str(_get_hermes_home())
+    run_env["NAZAR_HOME"] = str(_get_nazar_home())
     try:
         from nazar_constants import get_subprocess_home
 
@@ -1455,9 +1455,9 @@ def _run_job_impl(job: dict) -> tuple[bool, str, str, Optional[str]]:
         # changes take effect without a gateway restart.
         from dotenv import load_dotenv
         try:
-            load_dotenv(str(_get_hermes_home() / ".env"), override=True, encoding="utf-8")
+            load_dotenv(str(_get_nazar_home() / ".env"), override=True, encoding="utf-8")
         except UnicodeDecodeError:
-            load_dotenv(str(_get_hermes_home() / ".env"), override=True, encoding="latin-1")
+            load_dotenv(str(_get_nazar_home() / ".env"), override=True, encoding="latin-1")
 
         delivery_target = _resolve_delivery_target(job)
         if delivery_target:
@@ -1475,7 +1475,7 @@ def _run_job_impl(job: dict) -> tuple[bool, str, str, Optional[str]]:
         _cfg = {}
         try:
             import yaml
-            _cfg_path = str(_get_hermes_home() / "config.yaml")
+            _cfg_path = str(_get_nazar_home() / "config.yaml")
             if os.path.exists(_cfg_path):
                 with open(_cfg_path, encoding="utf-8") as _f:
                     _cfg = yaml.safe_load(_f) or {}
@@ -1509,7 +1509,7 @@ def _run_job_impl(job: dict) -> tuple[bool, str, str, Optional[str]]:
         if prefill_file:
             pfpath = Path(prefill_file).expanduser()
             if not pfpath.is_absolute():
-                pfpath = _get_hermes_home() / pfpath
+                pfpath = _get_nazar_home() / pfpath
             if pfpath.exists():
                 try:
                     with open(pfpath, "r", encoding="utf-8") as _pf:

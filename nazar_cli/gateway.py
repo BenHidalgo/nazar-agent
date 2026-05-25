@@ -25,7 +25,7 @@ from gateway.restart import (
 )
 from nazar_cli.config import (
     get_env_value,
-    get_hermes_home,
+    get_nazar_home,
     is_managed,
     managed_error,
     read_raw_config,
@@ -307,7 +307,7 @@ def _scan_gateway_pids(exclude_pids: set[int], all_profiles: bool = False) -> li
         "hermes gateway",
         "gateway/run.py",
     ]
-    current_home = str(get_hermes_home().resolve())
+    current_home = str(get_nazar_home().resolve())
     current_profile_arg = _profile_arg(current_home)
     current_profile_name = current_profile_arg.split()[-1] if current_profile_arg else ""
 
@@ -706,7 +706,7 @@ def _sync_hermes_home_from_systemd_unit(system: bool) -> None:
     """When acting on a system-scope unit, adopt its ``NAZAR_HOME``.
 
     Under ``sudo``, ``NAZAR_HOME`` is stripped and ``HOME=/root``, so
-    :func:`get_hermes_home` falls back to ``/root/.hermes`` — the wrong
+    :func:`get_nazar_home` falls back to ``/root/.hermes`` — the wrong
     profile. The unit file pins ``NAZAR_HOME`` for the actual gateway
     process, so we mirror that into our own environment to make
     ``read_runtime_status`` / ``get_running_pid`` read the correct files.
@@ -1290,7 +1290,7 @@ def _profile_suffix() -> str:
     import hashlib
     import re
     from nazar_constants import get_default_hermes_root
-    home = get_hermes_home().resolve()
+    home = get_nazar_home().resolve()
     default = get_default_hermes_root().resolve()
     if home == default:
         return ""
@@ -1315,12 +1315,12 @@ def _profile_arg(hermes_home: str | None = None) -> str:
 
     Args:
         hermes_home: Optional explicit NAZAR_HOME path. Defaults to the current
-            ``get_hermes_home()`` value. Should be passed when generating a
+            ``get_nazar_home()`` value. Should be passed when generating a
             service definition for a different user (e.g. system service).
     """
     import re
     from nazar_constants import get_default_hermes_root
-    home = Path(hermes_home or str(get_hermes_home())).resolve()
+    home = Path(hermes_home or str(get_nazar_home())).resolve()
     default = get_default_hermes_root().resolve()
     if home == default:
         return ""
@@ -2104,13 +2104,13 @@ def _remap_path_for_user(path: str, target_home_dir: str) -> str:
 def _hermes_home_for_target_user(target_home_dir: str) -> str:
     """Remap the current NAZAR_HOME to the equivalent under a target user's home.
 
-    When installing a system service via sudo, get_hermes_home() resolves to
+    When installing a system service via sudo, get_nazar_home() resolves to
     root's home.  This translates it to the target user's equivalent path:
       /root/.hermes                    → /home/alice/.hermes
       /root/.hermes/profiles/coder     → /home/alice/.hermes/profiles/coder
       /opt/custom-hermes               → /opt/custom-hermes  (kept as-is)
     """
-    current_hermes = get_hermes_home().resolve()
+    current_hermes = get_nazar_home().resolve()
     current_default = (Path.home() / ".hermes").resolve()
     target_default = Path(target_home_dir) / ".hermes"
 
@@ -2150,7 +2150,7 @@ def _build_service_path_dirs(project_root: Path | None = None) -> list[str]:
     if _is_dir(node_bin):
         candidates.append(str(node_bin))
 
-    hermes_home = get_hermes_home()
+    hermes_home = get_nazar_home()
     hermes_node = hermes_home / "node" / "bin"
     if _is_dir(hermes_node):
         candidates.append(str(hermes_node))
@@ -2233,7 +2233,7 @@ StandardError=journal
 WantedBy=multi-user.target
 """
 
-    hermes_home = str(get_hermes_home().resolve())
+    hermes_home = str(get_nazar_home().resolve())
     profile_arg = _profile_arg(hermes_home)
     path_entries.extend(_build_user_local_paths(Path.home(), path_entries))
     path_entries.extend(_build_wsl_interop_paths(path_entries))
@@ -2805,8 +2805,8 @@ def _launchd_domain() -> str:
 def generate_launchd_plist() -> str:
     python_path = get_python_path()
     working_dir = str(PROJECT_ROOT)
-    hermes_home = str(get_hermes_home().resolve())
-    log_dir = get_hermes_home() / "logs"
+    hermes_home = str(get_nazar_home().resolve())
+    log_dir = get_nazar_home() / "logs"
     log_dir.mkdir(parents=True, exist_ok=True)
     label = get_launchd_label()
     profile_arg = _profile_arg(hermes_home)
@@ -3112,7 +3112,7 @@ def launchd_status(deep: bool = False):
         print("  Run: hermes gateway start")
     
     if deep:
-        log_file = get_hermes_home() / "logs" / "gateway.log"
+        log_file = get_nazar_home() / "logs" / "gateway.log"
         if log_file.exists():
             print()
             print("Recent logs:")
@@ -3257,7 +3257,7 @@ def run_gateway(verbose: int = 0, quiet: bool = False, replace: bool = False):
         if os.environ.get("HERMES_GATEWAY_EXIT_DIAG", "1") != "1":
             return
         try:
-            from nazar_constants import get_hermes_home as _ghh
+            from nazar_constants import get_nazar_home as _ghh
             log_dir = _ghh() / "logs"
             log_dir.mkdir(parents=True, exist_ok=True)
             ts = _dt.now(_tz.utc).isoformat()
@@ -3777,7 +3777,7 @@ def _platform_status(platform: dict) -> str:
     val = get_env_value(token_var)
     if token_var == "WHATSAPP_ENABLED":
         if val and val.lower() == "true":
-            session_file = get_hermes_home() / "whatsapp" / "session" / "creds.json"
+            session_file = get_nazar_home() / "whatsapp" / "session" / "creds.json"
             if session_file.exists():
                 return "configured + paired"
             return "enabled, not paired"
@@ -4247,7 +4247,7 @@ def _setup_weixin():
 
     import asyncio
     try:
-        credentials = asyncio.run(qr_login(str(get_hermes_home())))
+        credentials = asyncio.run(qr_login(str(get_nazar_home())))
     except KeyboardInterrupt:
         print()
         print_warning("  Weixin setup cancelled.")

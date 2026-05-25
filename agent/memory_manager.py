@@ -594,11 +594,11 @@ class MemoryManager:
 
         Automatically injects ``hermes_home`` into *kwargs* so that every
         provider can resolve profile-scoped storage paths without importing
-        ``get_hermes_home()`` themselves.
+        ``get_nazar_home()`` themselves.
         """
         if "hermes_home" not in kwargs:
-            from nazar_constants import get_hermes_home
-            kwargs["hermes_home"] = str(get_hermes_home())
+            from nazar_constants import get_nazar_home
+            kwargs["hermes_home"] = str(get_nazar_home())
         for provider in self._providers:
             try:
                 provider.initialize(session_id=session_id, **kwargs)

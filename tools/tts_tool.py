@@ -178,8 +178,8 @@ GEMINI_TTS_CHANNELS = 1
 GEMINI_TTS_SAMPLE_WIDTH = 2  # 16-bit PCM (L16)
 
 def _get_default_output_dir() -> str:
-    from nazar_constants import get_hermes_dir
-    return str(get_hermes_dir("cache/audio", "audio_cache"))
+    from nazar_constants import get_nazar_dir
+    return str(get_nazar_dir("cache/audio", "audio_cache"))
 
 DEFAULT_OUTPUT_DIR = _get_default_output_dir()
 
@@ -1613,8 +1613,8 @@ def _get_piper_voices_dir() -> Path:
     Resolves to ``~/.hermes/cache/piper-voices/`` under the active
     NAZAR_HOME so voice downloads follow profile boundaries.
     """
-    from nazar_constants import get_hermes_dir
-    root = Path(get_hermes_dir("cache/piper-voices", "piper_voices_cache"))
+    from nazar_constants import get_nazar_dir
+    root = Path(get_nazar_dir("cache/piper-voices", "piper_voices_cache"))
     root.mkdir(parents=True, exist_ok=True)
     return root
 

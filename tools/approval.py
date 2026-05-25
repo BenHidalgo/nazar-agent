@@ -123,8 +123,8 @@ def _is_gateway_approval_context() -> bool:
 # via shell expansions like $HOME or $NAZAR_HOME.
 _SSH_SENSITIVE_PATH = r'(?:~|\$home|\$\{home\})/\.ssh(?:/|$)'
 _HERMES_ENV_PATH = (
-    r'(?:~\/\.hermes/|'
-    r'(?:\$home|\$\{home\})/\.hermes/|'
+    r'(?:~\/\.nazar/|'
+    r'(?:\$home|\$\{home\})/\.nazar/|'
     r'(?:\$hermes_home|\$\{hermes_home\})/)'
     r'\.env\b'
 )

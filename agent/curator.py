@@ -31,7 +31,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Callable, Dict, List, NamedTuple, Optional, Set
 
-from nazar_constants import get_hermes_home
+from nazar_constants import get_nazar_home
 from tools import skill_usage
 
 logger = logging.getLogger(__name__)
@@ -64,7 +64,7 @@ DEFAULT_ARCHIVE_AFTER_DAYS = 90
 # ---------------------------------------------------------------------------
 
 def _state_file() -> Path:
-    return get_hermes_home() / "skills" / ".curator_state"
+    return get_nazar_home() / "skills" / ".curator_state"
 
 
 def _default_state() -> Dict[str, Any]:
@@ -463,7 +463,7 @@ def _reports_root() -> Path:
     from an odd entry path (e.g. gateway-only install, bare library use)
     that bypasses both.
     """
-    root = get_hermes_home() / "logs" / "curator"
+    root = get_nazar_home() / "logs" / "curator"
     try:
         root.mkdir(parents=True, exist_ok=True)
     except OSError as e:

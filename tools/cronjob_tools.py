@@ -264,7 +264,7 @@ def _validate_cron_script_path(script: Optional[str]) -> Optional[str]:
     if not script or not script.strip():
         return None  # empty/None = clearing the field, always OK
 
-    from nazar_constants import get_hermes_home
+    from nazar_constants import get_nazar_home
 
     raw = script.strip()
 
@@ -280,7 +280,7 @@ def _validate_cron_script_path(script: Optional[str]) -> Optional[str]:
     # Validate containment after resolution
     from tools.path_security import validate_within_dir
 
-    scripts_dir = get_hermes_home() / "scripts"
+    scripts_dir = get_nazar_home() / "scripts"
     scripts_dir.mkdir(parents=True, exist_ok=True)
     containment_error = validate_within_dir(scripts_dir / raw, scripts_dir)
     if containment_error:

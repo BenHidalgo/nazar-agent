@@ -11,7 +11,7 @@ import shutil
 import subprocess
 from pathlib import Path
 
-from nazar_constants import get_hermes_home
+from nazar_constants import get_nazar_home
 
 from nazar_cli.colors import Colors, color
 
@@ -442,7 +442,7 @@ def run_uninstall(args):
     - Keep data: removes code but keeps ~/.hermes/ for future reinstall
     """
     project_root = get_project_root()
-    hermes_home = get_hermes_home()
+    hermes_home = get_nazar_home()
 
     # Detect named profiles when uninstalling from the default root —
     # offer to clean them up too instead of leaving zombie NAZAR_HOMEs

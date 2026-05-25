@@ -5686,7 +5686,7 @@ def _default_spawn(
     # config.  Without this, `env = dict(os.environ)` copies only the parent's
     # env, and when the child process starts `hermes -p <name>` the
     # _apply_profile_override() runs *before* hermes_constants is imported.
-    # If NAZAR_HOME is absent from the child's env, get_hermes_home() falls
+    # If NAZAR_HOME is absent from the child's env, get_nazar_home() falls
     # back to Path.home() / ".hermes" (the DEFAULT profile root), ignoring the
     # profile-specific config entirely.  Fixes profile-scoped fallback_providers
     # being invisible to kanban workers.

@@ -39,7 +39,7 @@ import re
 import shutil
 import tempfile
 from pathlib import Path
-from nazar_constants import get_hermes_home, display_hermes_home
+from nazar_constants import get_nazar_home, display_hermes_home
 from typing import Dict, Any, List, Optional, Tuple
 
 from utils import atomic_replace, is_truthy_value
@@ -105,7 +105,7 @@ import yaml
 
 
 # All skills live in ~/.hermes/skills/ (single source of truth)
-NAZAR_HOME = get_hermes_home()
+NAZAR_HOME = get_nazar_home()
 SKILLS_DIR = NAZAR_HOME / "skills"
 
 MAX_NAME_LENGTH = 64

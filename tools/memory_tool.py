@@ -31,7 +31,7 @@ import tempfile
 import time
 from contextlib import contextmanager
 from pathlib import Path
-from nazar_constants import get_hermes_home
+from nazar_constants import get_nazar_home
 from typing import Dict, Any, List, Optional
 
 from utils import atomic_replace
@@ -55,7 +55,7 @@ logger = logging.getLogger(__name__)
 # happened after the first import.
 def get_memory_dir() -> Path:
     """Return the profile-scoped memories directory."""
-    return get_hermes_home() / "memories"
+    return get_nazar_home() / "memories"
 
 ENTRY_DELIMITER = "\n§\n"
 
@@ -101,9 +101,9 @@ _MEMORY_THREAT_PATTERNS = [
     # ── Persistence / SSH backdoor ──
     (r'authorized_keys', "ssh_backdoor"),
     (r'\$HOME/\.ssh|\~/\.ssh', "ssh_access"),
-    (r'\$HOME/\.hermes/\.env|\~/\.hermes/\.env', "hermes_env"),
+    (r'\$HOME/\.nazar/\.env|\~/.nazar/\.env', "hermes_env"),
     (r'(update|modify|edit|write|change|append|add\s+to)\s+.*(?:AGENTS\.md|CLAUDE\.md|\.cursorrules|\.clinerules)', "agent_config_mod"),
-    (r'(update|modify|edit|write|change|append|add\s+to)\s+.*\.hermes/(config\.yaml|SOUL\.md)', "hermes_config_mod"),
+    (r'(update|modify|edit|write|change|append|add\s+to)\s+.*\.nazar/(config\.yaml|SOUL\.md)', "hermes_config_mod"),
 
     # ── Hardcoded secrets ──
     (r'(?:api[_-]?key|token|secret|password)\s*[=:]\s*["\'][A-Za-z0-9+/=_-]{20,}', "hardcoded_secret"),

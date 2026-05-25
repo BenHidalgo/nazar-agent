@@ -24,14 +24,14 @@ import time
 from pathlib import Path
 
 from agent.memory_manager import sanitize_context
-from nazar_constants import get_hermes_home
+from nazar_constants import get_nazar_home
 from typing import Any, Callable, Dict, List, Optional, Tuple, TypeVar
 
 logger = logging.getLogger(__name__)
 
 T = TypeVar("T")
 
-DEFAULT_DB_PATH = get_hermes_home() / "state.db"
+DEFAULT_DB_PATH = get_nazar_home() / "state.db"
 
 SCHEMA_VERSION = 13
 

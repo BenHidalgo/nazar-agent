@@ -1195,12 +1195,12 @@ def _dump_subagent_timeout_diagnostic(
     Returns the absolute path to the diagnostic file, or None on failure.
     """
     try:
-        from nazar_constants import get_hermes_home
+        from nazar_constants import get_nazar_home
         import datetime as _dt
         import sys as _sys
         import traceback as _traceback
 
-        hermes_home = get_hermes_home()
+        hermes_home = get_nazar_home()
         logs_dir = hermes_home / "logs"
         try:
             logs_dir.mkdir(parents=True, exist_ok=True)

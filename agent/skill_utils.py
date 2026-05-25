@@ -290,9 +290,9 @@ def get_external_skills_dirs() -> List[Path]:
     if not isinstance(raw_dirs, list):
         return []
 
-    from nazar_constants import get_hermes_home
+    from nazar_constants import get_nazar_home
 
-    hermes_home = get_hermes_home()
+    hermes_home = get_nazar_home()
     local_skills = get_skills_dir().resolve()
     seen: Set[Path] = set()
     result = []

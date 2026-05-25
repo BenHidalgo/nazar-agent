@@ -691,8 +691,8 @@ def create_profile(
     if clone_from is not None or clone_all or clone_config:
         if clone_from is None:
             # Default: clone from active profile
-            from nazar_constants import get_hermes_home
-            source_dir = get_hermes_home()
+            from nazar_constants import get_nazar_home
+            source_dir = get_nazar_home()
         else:
             clone_from = normalize_profile_name(clone_from)
             validate_profile_name(clone_from)
@@ -1206,8 +1206,8 @@ def get_active_profile_name() -> str:
     Returns the profile name if NAZAR_HOME points into ``~/.hermes/profiles/<name>``.
     Returns ``"custom"`` if NAZAR_HOME is set to an unrecognized path.
     """
-    from nazar_constants import get_hermes_home
-    hermes_home = get_hermes_home()
+    from nazar_constants import get_nazar_home
+    hermes_home = get_nazar_home()
     resolved = hermes_home.resolve()
 
     default_resolved = _get_default_hermes_home().resolve()

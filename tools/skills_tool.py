@@ -69,7 +69,7 @@ Usage:
 import json
 import logging
 
-from nazar_constants import get_hermes_home, display_hermes_home
+from nazar_constants import get_nazar_home, display_hermes_home
 import os
 import re
 from enum import Enum
@@ -87,7 +87,7 @@ logger = logging.getLogger(__name__)
 # All skills live in ~/.hermes/skills/ (seeded from bundled skills/ on install).
 # This is the single source of truth -- agent edits, hub installs, and bundled
 # skills all coexist here without polluting the git repo.
-NAZAR_HOME = get_hermes_home()
+NAZAR_HOME = get_nazar_home()
 SKILLS_DIR = NAZAR_HOME / "skills"
 
 # Anthropic-recommended limits for progressive disclosure efficiency
@@ -110,7 +110,7 @@ _secret_capture_callback = None
 
 def load_env() -> Dict[str, str]:
     """Load profile-scoped environment variables from NAZAR_HOME/.env."""
-    env_path = get_hermes_home() / ".env"
+    env_path = get_nazar_home() / ".env"
     env_vars: Dict[str, str] = {}
     if not env_path.exists():
         return env_vars

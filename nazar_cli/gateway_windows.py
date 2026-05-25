@@ -256,9 +256,9 @@ def get_task_script_path() -> Path:
     Hermes installs stay self-contained).
     """
     _assert_windows()
-    from nazar_cli.config import get_hermes_home
+    from nazar_cli.config import get_nazar_home
 
-    script_dir = Path(get_hermes_home()) / "gateway-service"
+    script_dir = Path(get_nazar_home()) / "gateway-service"
     script_dir.mkdir(parents=True, exist_ok=True)
     return script_dir / f"{_sanitize_filename(get_task_name())}.cmd"
 
@@ -351,7 +351,7 @@ def _write_task_script() -> Path:
     """Generate and write the gateway.cmd wrapper. Return its absolute path."""
     _assert_windows()
     # Local imports to avoid circular-init at module load time.
-    from nazar_cli.config import get_hermes_home
+    from nazar_cli.config import get_nazar_home
     from nazar_cli.gateway import (
         PROJECT_ROOT,
         _profile_arg,
@@ -360,7 +360,7 @@ def _write_task_script() -> Path:
 
     python_path = get_python_path()
     working_dir = str(PROJECT_ROOT)
-    hermes_home = str(Path(get_hermes_home()).resolve())
+    hermes_home = str(Path(get_nazar_home()).resolve())
     profile_arg = _profile_arg(hermes_home)
 
     content = _build_gateway_cmd_script(python_path, working_dir, hermes_home, profile_arg)
@@ -518,7 +518,7 @@ def _build_gateway_argv() -> tuple[list[str], str, dict[str, str]]:
     layer in between.
     """
     _assert_windows()
-    from nazar_cli.config import get_hermes_home
+    from nazar_cli.config import get_nazar_home
     from nazar_cli.gateway import (
         PROJECT_ROOT,
         _profile_arg,
@@ -527,7 +527,7 @@ def _build_gateway_argv() -> tuple[list[str], str, dict[str, str]]:
 
     python_exe, venv_dir, extra_pythonpath = _resolve_detached_python(get_python_path())
     working_dir = str(PROJECT_ROOT)
-    hermes_home = str(Path(get_hermes_home()).resolve())
+    hermes_home = str(Path(get_nazar_home()).resolve())
     profile_arg = _profile_arg(hermes_home)
 
     argv = [python_exe, "-m", "hermes_cli.main"]
@@ -583,9 +583,9 @@ def _spawn_detached(script_path: Path | None = None) -> int:
     # logging module writes to gateway.log through a FileHandler, so the
     # real gateway logs still land there — this just captures anything
     # that goes to print() or native stderr.
-    from nazar_cli.config import get_hermes_home
+    from nazar_cli.config import get_nazar_home
 
-    log_dir = Path(get_hermes_home()) / "logs"
+    log_dir = Path(get_nazar_home()) / "logs"
     log_dir.mkdir(parents=True, exist_ok=True)
     stray_log = log_dir / "gateway-stdio.log"
 
@@ -836,15 +836,15 @@ def _report_gateway_start(via: str) -> None:
     else:
         print(f"⚠ Launched gateway via {via}, but no process detected after 6s.")
         print("  Check the log for startup errors:")
-        from nazar_cli.config import get_hermes_home
-        print(f"    type {Path(get_hermes_home()).resolve()}\\logs\\gateway.log")
-        print(f"    type {Path(get_hermes_home()).resolve()}\\logs\\gateway-stdio.log")
+        from nazar_cli.config import get_nazar_home
+        print(f"    type {Path(get_nazar_home()).resolve()}\\logs\\gateway.log")
+        print(f"    type {Path(get_nazar_home()).resolve()}\\logs\\gateway-stdio.log")
 
 
 def _print_next_steps() -> None:
-    from nazar_cli.config import get_hermes_home
+    from nazar_cli.config import get_nazar_home
 
-    hermes_home = Path(get_hermes_home()).resolve()
+    hermes_home = Path(get_nazar_home()).resolve()
     print()
     print("Next steps:")
     print("  hermes gateway status                      # Check status")

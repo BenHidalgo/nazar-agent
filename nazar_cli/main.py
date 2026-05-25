@@ -43,15 +43,15 @@ Usage:
     hermes claw migrate --dry-run  # Preview migration without changes
 """
 
-# IMPORTANT: hermes_bootstrap must be the very first import — it sets up
+# IMPORTANT: nazar_bootstrap must be the very first import — it sets up
 # UTF-8 stdio on Windows so print()/subprocess children don't hit
 # UnicodeEncodeError with non-ASCII characters.  No-op on POSIX.
 #
-# Guarded against ModuleNotFoundError because ``hermes_bootstrap`` is a
+# Guarded against ModuleNotFoundError because ``nazar_bootstrap`` is a
 # top-level module registered via pyproject.toml's ``py-modules`` list.
 # When the user upgrades code via ``git pull`` (or ``hermes update``
 # crashes between ``git reset --hard`` and ``uv pip install -e .``), the
-# new code references ``hermes_bootstrap`` but the editable install's
+# new code references ``nazar_bootstrap`` but the editable install's
 # ``.pth`` file still points at the old set of top-level modules.  Without
 # this guard, hermes crashes on import and the user can't run
 # ``hermes update`` to recover.  Missing the bootstrap means UTF-8 stdio
@@ -270,7 +270,7 @@ _apply_profile_override()
 
 # Load .env from ~/.hermes/.env first, then project root as dev fallback.
 # User-managed env files should override stale shell exports on restart.
-from nazar_cli.config import get_hermes_home
+from nazar_cli.config import get_nazar_home
 from nazar_cli.env_loader import load_hermes_dotenv
 
 load_hermes_dotenv(project_env=PROJECT_ROOT / ".env")
@@ -288,7 +288,7 @@ _FORCE_IPV4_EARLY = False
 try:
     import yaml as _yaml_early
 
-    _cfg_path = get_hermes_home() / "config.yaml"
+    _cfg_path = get_nazar_home() / "config.yaml"
     if _cfg_path.exists():
         with open(_cfg_path, encoding="utf-8") as _f:
             _early_cfg_raw = _yaml_early.safe_load(_f) or {}
@@ -424,7 +424,7 @@ def _termux_bundled_skills_fingerprint() -> str:
 
 
 def _termux_bundled_skills_stamp_path() -> Path:
-    return get_hermes_home() / "skills" / ".termux_bundled_sync_stamp"
+    return get_nazar_home() / "skills" / ".termux_bundled_sync_stamp"
 
 
 def _termux_bundled_skills_sync_needed() -> bool:
@@ -493,7 +493,7 @@ def _relative_time(ts) -> str:
 
 def _has_any_provider_configured() -> bool:
     """Check if at least one inference provider is usable."""
-    from nazar_cli.config import get_env_path, get_hermes_home, load_config
+    from nazar_cli.config import get_env_path, get_nazar_home, load_config
     from nazar_cli.auth import get_auth_status
 
     # Determine whether Hermes itself has been explicitly configured (model
@@ -559,7 +559,7 @@ def _has_any_provider_configured() -> bool:
         pass
 
     # Check for Nous Portal OAuth credentials
-    auth_file = get_hermes_home() / "auth.json"
+    auth_file = get_nazar_home() / "auth.json"
     if auth_file.exists():
         try:
             import json
@@ -1975,7 +1975,7 @@ def cmd_whatsapp(args):
         print("✓ Bridge dependencies already installed")
 
     # ── Step 5: Check for existing session ───────────────────────────────
-    session_dir = get_hermes_home() / "whatsapp" / "session"
+    session_dir = get_nazar_home() / "whatsapp" / "session"
     session_dir.mkdir(parents=True, exist_ok=True)
 
     if (session_dir / "creds.json").exists():
@@ -6425,9 +6425,9 @@ def _gateway_prompt(prompt_text: str, default: str = "", timeout: float = 300.0)
     """
     import json as _json
     import uuid as _uuid
-    from nazar_constants import get_hermes_home
+    from nazar_constants import get_nazar_home
 
-    home = get_hermes_home()
+    home = get_nazar_home()
     prompt_path = home / ".update_prompt.json"
     response_path = home / ".update_response"
 
@@ -7416,17 +7416,17 @@ def _count_commits_between(git_cmd: list[str], cwd: Path, base: str, head: str) 
 
 def _should_skip_upstream_prompt() -> bool:
     """Check if user previously declined to add upstream."""
-    from nazar_constants import get_hermes_home
+    from nazar_constants import get_nazar_home
 
-    return (get_hermes_home() / SKIP_UPSTREAM_PROMPT_FILE).exists()
+    return (get_nazar_home() / SKIP_UPSTREAM_PROMPT_FILE).exists()
 
 
 def _mark_skip_upstream_prompt():
     """Create marker file to skip future upstream prompts."""
     try:
-        from nazar_constants import get_hermes_home
+        from nazar_constants import get_nazar_home
 
-        (get_hermes_home() / SKIP_UPSTREAM_PROMPT_FILE).touch()
+        (get_nazar_home() / SKIP_UPSTREAM_PROMPT_FILE).touch()
     except Exception:
         pass
 
@@ -8346,10 +8346,10 @@ def _install_hangup_protection(gateway_mode: bool = False):
     # tolerance.  Any failure here is non-fatal; we just skip the wrap.
     try:
         # Late-bound import so tests can monkeypatch
-        # hermes_cli.config.get_hermes_home to simulate setup failure.
-        from nazar_cli.config import get_hermes_home as _get_hermes_home
+        # hermes_cli.config.get_nazar_home to simulate setup failure.
+        from nazar_cli.config import get_nazar_home as _get_nazar_home
 
-        logs_dir = _get_hermes_home() / "logs"
+        logs_dir = _get_nazar_home() / "logs"
         logs_dir.mkdir(parents=True, exist_ok=True)
         log_path = logs_dir / "update.log"
         log_file = open(log_path, "a", buffering=1, encoding="utf-8")
@@ -8644,9 +8644,9 @@ def _run_pre_update_backup(args) -> None:
 
     # Render path using display_hermes_home so the user sees ~/.hermes/...
     try:
-        from nazar_constants import get_hermes_home, display_hermes_home
+        from nazar_constants import get_nazar_home, display_hermes_home
 
-        home = get_hermes_home()
+        home = get_nazar_home()
         try:
             display_path = f"{display_hermes_home()}/{out_path.relative_to(home)}"
         except ValueError:
@@ -9015,7 +9015,7 @@ def _cmd_update_impl(args, gateway_mode: bool):
 
         # Clear stale .pyc bytecode cache — prevents ImportError on gateway
         # restart when updated source references names that didn't exist in
-        # the old bytecode (e.g. get_hermes_home added to hermes_constants).
+        # the old bytecode (e.g. get_nazar_home added to hermes_constants).
         removed = _clear_bytecode_cache(PROJECT_ROOT)
         if removed:
             print(
@@ -9304,7 +9304,7 @@ def _cmd_update_impl(args, gateway_mode: bool):
         # before we attempt the restart — ensures the new gateway sees it
         # regardless of how we die.
         if gateway_mode:
-            _exit_code_path = get_hermes_home() / ".update_exit_code"
+            _exit_code_path = get_nazar_home() / ".update_exit_code"
             try:
                 _exit_code_path.write_text("0")
             except OSError:
@@ -10206,7 +10206,7 @@ def cmd_profile(args):
         if name and not text_value and not auto_flag:
             try:
                 if _profiles_mod.normalize_profile_name(name) == "default":
-                    from nazar_constants import get_hermes_home as _hh
+                    from nazar_constants import get_nazar_home as _hh
                     profile_dir = Path(_hh())
                 else:
                     profile_dir = _profiles_mod.get_profile_dir(name)
@@ -10229,7 +10229,7 @@ def cmd_profile(args):
         if text_value:
             try:
                 if _profiles_mod.normalize_profile_name(name) == "default":
-                    from nazar_constants import get_hermes_home as _hh
+                    from nazar_constants import get_nazar_home as _hh
                     profile_dir = Path(_hh())
                 else:
                     profile_dir = _profiles_mod.get_profile_dir(name)
@@ -12747,9 +12747,9 @@ Examples:
             print("\n  ✓ Memory provider: built-in only")
             print("  Saved to config.yaml\n")
         elif sub == "reset":
-            from nazar_constants import get_hermes_home, display_hermes_home
+            from nazar_constants import get_nazar_home, display_hermes_home
 
-            mem_dir = get_hermes_home() / "memories"
+            mem_dir = get_nazar_home() / "memories"
             target = getattr(args, "target", "all")
             files_to_reset = []
             if target in {"all", "memory"}:
@@ -13187,7 +13187,7 @@ Examples:
                 ):
                     print("Cancelled.")
                     return
-            sessions_dir = get_hermes_home() / "sessions"
+            sessions_dir = get_nazar_home() / "sessions"
             if db.delete_session(resolved_session_id, sessions_dir=sessions_dir):
                 print(f"Deleted session '{resolved_session_id}'.")
             else:
@@ -13202,7 +13202,7 @@ Examples:
                 ):
                     print("Cancelled.")
                     return
-            sessions_dir = get_hermes_home() / "sessions"
+            sessions_dir = get_nazar_home() / "sessions"
             count = db.prune_sessions(
                 older_than_days=days, source=args.source, sessions_dir=sessions_dir
             )

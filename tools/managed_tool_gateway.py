@@ -11,7 +11,7 @@ from typing import Callable, Optional
 
 logger = logging.getLogger(__name__)
 
-from nazar_constants import get_hermes_home
+from nazar_constants import get_nazar_home
 from tools.tool_backend_helpers import managed_nous_tools_enabled
 
 _DEFAULT_TOOL_GATEWAY_DOMAIN = "nousresearch.com"
@@ -29,7 +29,7 @@ class ManagedToolGatewayConfig:
 
 def auth_json_path():
     """Return the Hermes auth store path, respecting NAZAR_HOME overrides."""
-    return get_hermes_home() / "auth.json"
+    return get_nazar_home() / "auth.json"
 
 
 def _read_nous_provider_state() -> Optional[dict]:

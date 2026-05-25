@@ -15,7 +15,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
 
-from nazar_constants import get_hermes_home
+from nazar_constants import get_nazar_home
 from nazar_cli.env_loader import load_hermes_dotenv
 from utils import is_truthy_value
 from tui_gateway.transport import (
@@ -28,7 +28,7 @@ from tui_gateway.transport import (
 
 logger = logging.getLogger(__name__)
 
-_hermes_home = get_hermes_home()
+_hermes_home = get_nazar_home()
 load_hermes_dotenv(
     hermes_home=_hermes_home, project_env=Path(__file__).parent.parent / ".env"
 )
@@ -2458,7 +2458,7 @@ def _(rid, params: dict) -> dict:
     active = {s.get("session_key") for s in snapshot if s.get("session_key")}
     if target in active:
         return _err(rid, 4023, "cannot delete an active session")
-    sessions_dir = get_hermes_home() / "sessions"
+    sessions_dir = get_nazar_home() / "sessions"
     try:
         deleted = db.delete_session(target, sessions_dir=sessions_dir)
     except Exception as e:
@@ -2934,9 +2934,9 @@ def _(rid, params: dict) -> dict:
 
 def _spawn_trees_root():
     from pathlib import Path as _P
-    from nazar_constants import get_hermes_home
+    from nazar_constants import get_nazar_home
 
-    root = get_hermes_home() / "spawn-trees"
+    root = get_nazar_home() / "spawn-trees"
     root.mkdir(parents=True, exist_ok=True)
     return root
 

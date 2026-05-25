@@ -47,7 +47,7 @@ from urllib.parse import parse_qs, urlencode, urlparse
 import httpx
 import yaml
 
-from nazar_cli.config import get_hermes_home, get_config_path, read_raw_config
+from nazar_cli.config import get_nazar_home, get_config_path, read_raw_config
 from nazar_constants import OPENROUTER_BASE_URL, secure_parent_dir
 from agent.credential_persistence import sanitize_borrowed_credential_payload
 from utils import atomic_replace, atomic_yaml_write, is_truthy_value
@@ -809,7 +809,7 @@ def _oauth_trace(event: str, *, sequence_id: Optional[str] = None, **fields: Any
 # =============================================================================
 
 def _auth_file_path() -> Path:
-    path = get_hermes_home() / "auth.json"
+    path = get_nazar_home() / "auth.json"
     # Seat belt: if pytest is running and NAZAR_HOME resolves to the real
     # user's auth store, refuse rather than silently corrupt it. This catches
     # tests that forgot to monkeypatch NAZAR_HOME, tests invoked without the
@@ -845,7 +845,7 @@ def _global_auth_file_path() -> Optional[Path]:
         global_root = get_default_hermes_root()
     except Exception:
         return None
-    profile_home = get_hermes_home()
+    profile_home = get_nazar_home()
     try:
         if profile_home.resolve(strict=False) == global_root.resolve(strict=False):
             return None

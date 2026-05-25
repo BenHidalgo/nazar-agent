@@ -206,10 +206,10 @@ def _remove_claude_code(provider: str, removed) -> RemovalResult:
 
 def _remove_hermes_pkce(provider: str, removed) -> RemovalResult:
     """~/.hermes/.anthropic_oauth.json is ours — delete it outright."""
-    from nazar_constants import get_hermes_home
+    from nazar_constants import get_nazar_home
 
     result = RemovalResult()
-    oauth_file = get_hermes_home() / ".anthropic_oauth.json"
+    oauth_file = get_nazar_home() / ".anthropic_oauth.json"
     if oauth_file.exists():
         try:
             oauth_file.unlink()

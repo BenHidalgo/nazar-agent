@@ -216,10 +216,10 @@ def _get_session_db() -> Optional[Any]:
     non-standard launchers can still use the GoalManager.
     """
     try:
-        from nazar_constants import get_hermes_home
+        from nazar_constants import get_nazar_home
         from nazar_state import SessionDB
 
-        home = str(get_hermes_home())
+        home = str(get_nazar_home())
     except Exception as exc:  # pragma: no cover
         logger.debug("GoalManager: SessionDB bootstrap failed (%s)", exc)
         return None

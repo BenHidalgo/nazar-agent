@@ -110,6 +110,6 @@ def cmd_migrate_xai(args: Any) -> int:
 
 def _resolve_config_path() -> Path:
     """Best-effort: locate the active config.yaml on disk."""
-    from nazar_cli.config import get_hermes_home
+    from nazar_cli.config import get_nazar_home
 
-    return get_hermes_home() / "config.yaml"
+    return get_nazar_home() / "config.yaml"

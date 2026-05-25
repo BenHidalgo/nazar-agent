@@ -221,8 +221,8 @@ def _load_hermes_env() -> None:
         load_dotenv = None  # type: ignore[assignment]
 
     try:
-        from nazar_cli.config import get_hermes_home
-        home = get_hermes_home()
+        from nazar_cli.config import get_nazar_home
+        home = get_nazar_home()
     except Exception:
         return
 

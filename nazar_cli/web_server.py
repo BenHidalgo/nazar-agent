@@ -39,7 +39,7 @@ from nazar_cli.config import (
     OPTIONAL_ENV_VARS,
     get_config_path,
     get_env_path,
-    get_hermes_home,
+    get_nazar_home,
     load_config,
     load_env,
     save_config,
@@ -625,7 +625,7 @@ async def get_status():
     return {
         "version": __version__,
         "release_date": __release_date__,
-        "hermes_home": str(get_hermes_home()),
+        "hermes_home": str(get_nazar_home()),
         "config_path": str(get_config_path()),
         "env_path": str(get_env_path()),
         "config_version": current_ver,
@@ -651,7 +651,7 @@ async def get_status():
 # the dashboard can tail them back to the user.
 # ---------------------------------------------------------------------------
 
-_ACTION_LOG_DIR: Path = get_hermes_home() / "logs"
+_ACTION_LOG_DIR: Path = get_nazar_home() / "logs"
 
 # Short ``name`` (from the URL) → absolute log file path.
 _ACTION_LOG_FILES: Dict[str, str] = {
@@ -2525,7 +2525,7 @@ async def get_logs(
     log_name = LOG_FILES.get(file)
     if not log_name:
         raise HTTPException(status_code=400, detail=f"Unknown log file: {file}")
-    log_path = get_hermes_home() / "logs" / log_name
+    log_path = get_nazar_home() / "logs" / log_name
     if not log_path.exists():
         return {"file": file, "lines": []}
 
@@ -4032,7 +4032,7 @@ def _discover_user_themes() -> list:
     to the frontend, so the client can apply them without a secondary
     round-trip or a built-in stub.
     """
-    themes_dir = get_hermes_home() / "dashboard-themes"
+    themes_dir = get_nazar_home() / "dashboard-themes"
     if not themes_dir.is_dir():
         return []
     result = []
@@ -4148,7 +4148,7 @@ def _discover_dashboard_plugins() -> list:
     from nazar_cli.plugins import get_bundled_plugins_dir
     bundled_root = get_bundled_plugins_dir()
     search_dirs = [
-        (get_hermes_home() / "plugins", "user"),
+        (get_nazar_home() / "plugins", "user"),
         (bundled_root / "memory", "bundled"),
         (bundled_root, "bundled"),
     ]
@@ -4307,7 +4307,7 @@ def _merged_plugins_hub() -> Dict[str, Any]:
     config = load_config()
     hidden_plugins: list = cfg_get(config, "dashboard", "hidden_plugins", default=[]) or []
 
-    plugins_root_resolved = (get_hermes_home() / "plugins").resolve()
+    plugins_root_resolved = (get_nazar_home() / "plugins").resolve()
     rows: List[Dict[str, Any]] = []
 
     for name, version, description, source, dir_str in _discover_all_plugins():

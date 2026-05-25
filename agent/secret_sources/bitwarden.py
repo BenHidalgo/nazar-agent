@@ -209,9 +209,9 @@ class FetchResult:
 
 def _hermes_bin_dir() -> Path:
     """Where Hermes stores its managed binaries.  Profile-aware."""
-    from nazar_constants import get_hermes_home
+    from nazar_constants import get_nazar_home
 
-    return get_hermes_home() / "bin"
+    return get_nazar_home() / "bin"
 
 
 def find_bws(*, install_if_missing: bool = False) -> Optional[Path]:
