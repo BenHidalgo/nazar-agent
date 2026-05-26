@@ -101,9 +101,9 @@ _MEMORY_THREAT_PATTERNS = [
     # ── Persistence / SSH backdoor ──
     (r'authorized_keys', "ssh_backdoor"),
     (r'\$HOME/\.ssh|\~/\.ssh', "ssh_access"),
-    (r'\$HOME/\.nazar/\.env|\~/.nazar/\.env', "hermes_env"),
+    (r'\$HOME/\.nazar/\.env|\~/.nazar/\.env', "nazar_env"),
     (r'(update|modify|edit|write|change|append|add\s+to)\s+.*(?:AGENTS\.md|CLAUDE\.md|\.cursorrules|\.clinerules)', "agent_config_mod"),
-    (r'(update|modify|edit|write|change|append|add\s+to)\s+.*\.nazar/(config\.yaml|SOUL\.md)', "hermes_config_mod"),
+    (r'(update|modify|edit|write|change|append|add\s+to)\s+.*\.nazar/(config\.yaml|SOUL\.md)', "nazar_config_mod"),
 
     # ── Hardcoded secrets ──
     (r'(?:api[_-]?key|token|secret|password)\s*[=:]\s*["\'][A-Za-z0-9+/=_-]{20,}', "hardcoded_secret"),
