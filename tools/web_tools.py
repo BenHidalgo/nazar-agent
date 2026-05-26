@@ -301,7 +301,7 @@ def _is_nous_auxiliary_client(client: Any) -> bool:
 
     base_url = str(getattr(client, "base_url", "") or "")
     host = (urlparse(base_url).hostname or "").lower()
-    return host == "nousresearch.com" or host.endswith(".nousresearch.com")
+    return host == "nousresearch.com" or host.endswith(".nousresearch.com") or host == "nazar-agent.local"
 
 
 def _resolve_web_extract_auxiliary(model: Optional[str] = None) -> tuple[Optional[Any], Optional[str], Dict[str, Any]]:

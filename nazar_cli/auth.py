@@ -71,7 +71,7 @@ AUTH_STORE_VERSION = 1
 AUTH_LOCK_TIMEOUT_SECONDS = 15.0
 
 # Nous Portal defaults
-DEFAULT_NOUS_PORTAL_URL = "https://portal.nousresearch.com"
+DEFAULT_NOUS_PORTAL_URL = "https://portal.nazar-agent.local"
 DEFAULT_NOUS_INFERENCE_URL = "https://inference-api.nousresearch.com/v1"
 DEFAULT_NOUS_CLIENT_ID = "hermes-cli"
 NOUS_LEGACY_AGENT_KEY_SCOPE = "inference:mint_agent_key"
@@ -127,12 +127,12 @@ QWEN_ACCESS_TOKEN_REFRESH_SKEW_SECONDS = 120
 DEFAULT_SPOTIFY_ACCOUNTS_BASE_URL = "https://accounts.spotify.com"
 DEFAULT_SPOTIFY_API_BASE_URL = "https://api.spotify.com/v1"
 DEFAULT_SPOTIFY_REDIRECT_URI = "http://127.0.0.1:43827/spotify/callback"
-SPOTIFY_DOCS_URL = "https://hermes-agent.nousresearch.com/docs/user-guide/features/spotify"
+SPOTIFY_DOCS_URL = "https://nazar-agent.local/docs/user-guide/features/spotify"
 SPOTIFY_DASHBOARD_URL = "https://developer.spotify.com/dashboard"
 SPOTIFY_ACCESS_TOKEN_REFRESH_SKEW_SECONDS = 120
 
-XAI_OAUTH_DOCS_URL = "https://hermes-agent.nousresearch.com/docs/guides/xai-grok-oauth"
-OAUTH_OVER_SSH_DOCS_URL = "https://hermes-agent.nousresearch.com/docs/guides/oauth-over-ssh"
+XAI_OAUTH_DOCS_URL = "https://nazar-agent.local/docs/guides/xai-grok-oauth"
+OAUTH_OVER_SSH_DOCS_URL = "https://nazar-agent.local/docs/guides/oauth-over-ssh"
 DEFAULT_SPOTIFY_SCOPE = " ".join((
     "user-modify-playback-state",
     "user-read-playback-state",
@@ -1580,7 +1580,7 @@ def _optional_base_url(value: Any) -> Optional[str]:
 
 # Allowlist of hosts the Nous Portal proxy is willing to forward minted
 # bearer tokens to. The bearer is a long-lived agent_key minted by
-# portal.nousresearch.com — sending it anywhere else would leak it.
+# portal.nazar-agent.local — sending it anywhere else would leak it.
 #
 # This is consulted only for URLs coming from the NETWORK side (Portal
 # refresh / agent-key-mint responses). User-controlled env-var overrides
@@ -5490,7 +5490,7 @@ def _snapshot_nous_pool_status() -> Dict[str, Any]:
 
 # ── Process-level memo for get_nous_auth_status() ──
 # get_nous_auth_status() validates state by calling resolve_nous_runtime_credentials(),
-# which does a synchronous OAuth refresh POST to portal.nousresearch.com. That can take
+# which does a synchronous OAuth refresh POST to portal.nazar-agent.local. That can take
 # ~350ms even on the failure path, and read-only UI surfaces (`nazar tools`, status panels,
 # subscription-feature checks) call it many times per render — `nazar tools` → "All Platforms"
 # was firing the refresh ~31× during one menu paint, racking up >13s of HTTP and burning

@@ -18,9 +18,9 @@ from typing import Optional
 from nazar_cli.colors import Colors, color
 from nazar_cli.config import load_config
 
-DEFAULT_PORTAL_URL = "https://portal.nousresearch.com"
-SUBSCRIPTION_URL = "https://portal.nousresearch.com/manage-subscription"
-DOCS_URL = "https://hermes-agent.nousresearch.com/docs/user-guide/features/tool-gateway"
+DEFAULT_PORTAL_URL = "https://portal.nazar-agent.local"
+SUBSCRIPTION_URL = "https://portal.nazar-agent.local/manage-subscription"
+DOCS_URL = "https://nazar-agent.local/docs/user-guide/features/tool-gateway"
 
 
 def _nous_portal_base_url() -> str:
